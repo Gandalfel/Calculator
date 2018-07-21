@@ -1,0 +1,155 @@
+package Calculator;
+
+import java.util.Stack;
+
+public class Converter
+{
+
+    private static Stack stack = new Stack();
+    private static String resultConverter = "";
+
+
+    public static void main(String[] args)
+    {
+        Filter filter = new Filter();
+        Window window = new Window();
+    }
+
+
+    /**
+     * Główna metoda tej klasy.
+     * Konwertuje wyrażenia infixowe na postfixowe.
+     * @param a
+     */
+    public static void CalcForMe(String a)
+    {
+
+        String statement = "";
+        boolean sign = true; //wskazuje na to, że jest to znak liczbowy (nie operator odermowania)
+
+        statement = a;
+        statement = statement.replaceAll(" ", "");
+
+        for (int i = 0; i < statement.length(); i++)
+        {
+            if (statement.charAt(i) == '(')
+            {
+                stack.push("(");
+                sign = true;
+                resultConverter += " ";
+            }
+            else if (statement.charAt(i) == ')')
+            {
+                resultConverter += " " + getFromStackUntilBracket();
+                sign = false;
+            }
+            else if ((statement.charAt(i) == '+' ||
+                    statement.charAt(i) == '-' ||
+                    statement.charAt(i) == '*' ||
+                    statement.charAt(i) == '/') && !sign)
+            {
+                resultConverter += " " + getFromStack(statement.substring(i, i + 1));
+                sign = true;
+            }
+            else
+                {
+                if (sign && statement.charAt(i) == '-')
+                {
+                    resultConverter += " ";
+                }
+                    resultConverter += statement.charAt(i);
+                sign = false;
+            }
+        }
+        resultConverter += getAllFromStack();
+        resultConverter = resultConverter.replaceAll("  ", " ");
+        System.out.println("ONP: " + resultConverter);
+    }
+
+
+
+    /**
+     * Pobiera wszytkie operatory ze stosu aż do napotkania nawiasu
+     * @return
+     */
+    private static String getFromStackUntilBracket()
+    {
+        String result = "";
+        String c = "";
+
+        if (!stack.empty())
+        {
+            c = (String) stack.pop();
+
+            while (!c.equals("("))
+            {
+                result = result + " " + c;
+                if (stack.empty()) break;
+                c = (String) stack.pop();
+            }
+        }
+
+        if (result.length() > 0)
+        {
+            result = " " + result;
+        }
+        return result;
+    }
+
+
+    /**
+     * Pobiera wszystkie operatory o priorytecie mniejszym lub równy oepratorowi ze stosu
+     * @param operator
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    private static String getFromStack(String operator)
+    {
+        String result = "";
+        String c = null;
+
+        if (!stack.empty())
+        {
+            c = (String) stack.pop();
+
+            while (((operator.equals("+") || operator.equals("-")) && !c.equals("(")) ||
+                   ((operator.equals("/") || operator.equals("*")) && (c.equals("/")  || c.equals("*"))))
+            {
+                result += " " + c;
+                if ((stack.empty())) break;
+                c = (String) stack.pop();
+            }
+            stack.push(c);
+        }
+        stack.push(operator);
+        return result;
+    }
+
+
+    /**
+     * Pobiera wszystko ze stosu
+     * @return
+     */
+    private static String getAllFromStack()
+    {
+        String result = "";
+        String c = null;
+
+        while (!stack.empty())
+        {
+            c = (String) stack.pop();
+            result += " " + c;
+        }
+        return result;
+    }
+
+
+    /**
+     * Zwraca zmeinną result (staing) w której jest przerobione działanie z notacji infixowej na postfixową.
+     * @return
+     */
+    public static String getConverterResult()
+    {
+        return resultConverter;
+    }
+}
