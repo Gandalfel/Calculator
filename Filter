@@ -1,0 +1,132 @@
+package Calculator;
+
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+
+public class Filter
+{
+
+    private static String chain = "";
+    private static StringBuilder chainSb = new StringBuilder(chain);
+    private static String resultFilter = "";
+    private static boolean isEnterKey = false;
+    private static int a = 0;
+
+
+    /**
+     * Odczytuje i filtruje znaki dostające się do StringBuildera chainSb.
+     * @param e
+     */
+    public static void displayInfo(KeyEvent e)
+    {
+        a = 0;
+
+        /**
+         * Z danych dostarczanych przez metodę getKeyChar() tworzy wartość String, np. 'a', 'X'
+         */
+        String finalKey = "";
+        char keyChar = e.getKeyChar();
+        System.out.println(keyChar);
+        finalKey = finalKey + keyChar;
+
+
+        /**
+         * Filtruje znaki które dostaną się do StringBuildera chainSb
+         */
+        if (finalKey.equals("0") || finalKey.equals("1") || finalKey.equals("2") || finalKey.equals("3") ||
+            finalKey.equals("4") || finalKey.equals("5") || finalKey.equals("6") || finalKey.equals("7") ||
+            finalKey.equals("8") || finalKey.equals("9") || finalKey.equals("+") || finalKey.equals("-") ||
+            finalKey.equals("*") || finalKey.equals("/") || finalKey.equals("(") || finalKey.equals(")"))
+
+        {
+            addCharacter(finalKey);
+        }
+
+
+        /**
+         * Po naciśnięciu ENTER dodaje do zmiennej resultFilter StringBuildera chainSb.
+         * Wywołuje metodę CalcForMe klasy Conwerter (ta metoda przekształca wyrażenie infixowe na postfixowe.
+         */
+        if(e.getKeyChar() == KeyEvent.VK_ENTER)
+        {
+            System.out.println("chainSb: " + chainSb);
+            resultFilter = resultFilter + chainSb;
+            System.out.println("getFilterResult(): " + getFilterResult());
+            Converter.CalcForMe(getFilterResult());
+            Calculator.ClaculatorStack(Converter.getConverterResult());
+
+        }
+
+        //a = e.getKeyChar(); //to do niepotrzebnej na razie metody isEnter()
+    }
+
+
+    /**
+     * Wywołana dodaje argument go StringBuildera chainSb.
+     * @param a
+     */
+    private static void addCharacter(String a)
+    {
+        chainSb.append(a).toString();
+    }
+
+
+    /**
+     * zwraca zmienną filterResult
+     * @return
+     */
+    private static String getFilterResult()
+    {
+        return resultFilter;
+    }
+
+
+    /**
+     * zwraca true po wciśnięciu ENTER
+     * @return
+     */
+    private static boolean isEnter()
+        {
+        if(a == KeyEvent.VK_ENTER)
+        {
+            isEnterKey = true;
+        }
+        return isEnterKey;
+    }
+
+
+    /**
+     * niepotrzebna metoda
+     * @return
+     * */
+    public static String readString()
+    {
+        int ch;
+        String r = getFilterResult();
+        boolean done = false;
+
+        while (!done)
+        {
+
+            try
+            {
+                ch = System.in.read();
+
+                if (ch < 0 || (char) ch == '\n')
+                {
+                    done = true;
+                }
+                else if ((char) ch != '\r')
+                {
+                    r = r + (char) ch;
+                }
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return r;
+    }
+}
+
