@@ -1,0 +1,42 @@
+package Calculator;
+
+import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+public class Window extends JFrame
+{
+
+    Window()
+    {
+        setSize(400, 300);
+        setTitle("Calculator");
+        setResizable(false);
+        setLayout(null);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
+
+        addKeyListener(new KeyListener()
+        {
+
+            @Override
+            public void keyTyped(KeyEvent e)
+            {
+                Filter.displayInfo(e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e)
+            {
+
+            }
+        });
+    }
+}
