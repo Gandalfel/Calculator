@@ -2,128 +2,48 @@ package Calculator;
 
 import java.util.Stack;
 
-/**
- *
- */
 public class Calculator
 {
-    private static Stack stack = new Stack();
-    private static String result = "";
-
-
-    /**
-     *
-     * @param a
-     */
-    public static void ClaculatorStack(String a) // jako argument daj Converter.getConventerResult
+    static double Calculate(String result)
     {
-        try
+        result = result.trim();
+        Stack<Double> values = new Stack<>(); //stos
+        String[] tokens = result.split(" +");
+        double answer = 0.0;
+
+        for (String token: tokens)
         {
-            String statement = a;
-            statement.replaceAll(" ", "");
-
-
-            /**
-             *
-             */
-            do
+            if(!isOperator(token))
             {
-                /**
-                 *
-                 */
-                System.out.println("statement.length():" + statement.length());
-
-                for (int i = 0; i < statement.length() + 1; i++)
-                {
-                    char xx = statement.charAt(i);
-                    String x = String.valueOf(xx);
-
-
-                    if(statement.charAt(i) == 0 || statement.charAt(i) == 1 || statement.charAt(i) == 2 ||
-                            statement.charAt(i) == 3 || statement.charAt(i) == 4 || statement.charAt(i) == 5 ||
-                            statement.charAt(i) == 6 || statement.charAt(i) == 7 || statement.charAt(i) == 8 ||
-                            statement.charAt(i) == 9)
-
-                        if (x == "0" || x == "1" || x == "2" || x == "3" || x == "4" ||
-                                x == "5" || x == "6" || x == "7" || x == "8" || x == "9")
-                        {
-                            stack.push(x);
-                        }
-                        else if (x == "*" || x == "/" || x == "+" || x == "-")
-                        {
-                            if (x == "*")
-                            {
-                                int secondNumber = (int) stack.pop();
-                                int firstNumber = (int) stack.pop();
-                                int multiplicationResultInt = (secondNumber * firstNumber);
-                                String multiplicationResultString = String.valueOf(multiplicationResultInt);
-                                stack.push(multiplicationResultString);
-                                System.out.println("multiplicationResultString:" + multiplicationResultString);
-
-                                secondNumber = 0;
-                                firstNumber = 0;
-                                multiplicationResultInt = 0;
-                                multiplicationResultString = "";
-                            }
-                    /*else if (x == '/')
-                    {
-                        int secondNumber = (int) stack.pop();
-                        int firstNumber = (int) stack.pop();
-                        int divisionResultInt = (secondNumber / firstNumber);
-                        String divisionResultString = String.valueOf(divisionResultInt);
-                        stack.push(divisionResultString);
-
-                        secondNumber = 0;
-                        firstNumber = 0;
-                        divisionResultInt = 0;
-                        divisionResultString = "";
-                    }
-                    else if (x == '+')
-                    {
-                        int secondNumber = (int) stack.pop();
-                        int firstNumber = (int) stack.pop();
-                        int additionResultInt = (secondNumber + firstNumber);
-                        String additionResultString = String.valueOf(additionResultInt);
-                        stack.push(additionResultString);
-
-                        secondNumber = 0;
-                        firstNumber = 0;
-                        additionResultInt = 0;
-                        additionResultString = "";
-                    }
-                    else if (x == '-')
-                    {
-                        int secondNumber = (int) stack.pop();
-                        int firstNumber = (int) stack.pop();
-                        int subtractionResultInt = (secondNumber - firstNumber);
-                        String subtractionResultString = String.valueOf(subtractionResultInt);
-                        stack.push(subtractionResultString);
-
-                        secondNumber = 0;
-                        firstNumber = 0;
-                        subtractionResultInt = 0;
-                        subtractionResultString = "";
-                    }*/
-                        }
-                }
+                values.add(Double.parseDouble(token));
             }
-            while(!stack.empty());
-
-            System.out.println(stack);
-            result = result + stack;
+            else
+            {
+                double a = values.pop();
+                double b = values.pop();
+                switch(token)
+                {
+                    case "+":
+                        answer = a + b;
+                        break;
+                    case "-":
+                        answer = b - a;
+                        break;
+                    case "*":
+                        answer = a * b;
+                        break;
+                    case "/":
+                        answer = a / b;
+                        break;
+                }
+                values.add(answer);
+            }
         }
-        catch (java.lang.StringIndexOutOfBoundsException e)
-        {
-            System.out.println("java.lang.StringIndexOutOfBoundsException");
-        }
+        return answer;
     }
 
-    /**
-     *
-     * @return
-     */
-    public static String getCalculatorResult()
+    private static boolean isOperator(String s)
     {
-        return result;
+        return s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/");
     }
 }
