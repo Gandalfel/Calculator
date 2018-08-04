@@ -21,7 +21,7 @@ public class Converter
      * Konwertuje wyrażenia infixowe na postfixowe.
      * @param a
      */
-    public static void CalcForMe(String a)
+    public static void ConvertForMe(String a)
     {
 
         String statement = "";
@@ -52,12 +52,12 @@ public class Converter
                 sign = true;
             }
             else
-                {
+            {
                 if (sign && statement.charAt(i) == '-')
                 {
                     resultConverter += " ";
                 }
-                    resultConverter += statement.charAt(i);
+                resultConverter += statement.charAt(i);
                 sign = false;
             }
         }
@@ -113,7 +113,7 @@ public class Converter
             c = (String) stack.pop();
 
             while (((operator.equals("+") || operator.equals("-")) && !c.equals("(")) ||
-                   ((operator.equals("/") || operator.equals("*")) && (c.equals("/")  || c.equals("*"))))
+                    ((operator.equals("/") || operator.equals("*")) && (c.equals("/")  || c.equals("*"))))
             {
                 result += " " + c;
                 if ((stack.empty())) break;
