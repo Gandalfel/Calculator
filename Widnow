@@ -1,23 +1,34 @@
 package Calculator;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Window extends JFrame
-{
+public class Window extends JFrame implements ActionListener {
+    JTextArea screen;
+    JButton b0utton, b1utton, b2utton, b3utton, b4utton, b5utton, b6utton, b7utton, b8utton, b9utton, b10utton,
+            b11utton, b12utton, b13utton, b14utton,
+            b15utton, b16utton, b17utton, b18utton, b19utton, b20utton, b21utton, b22utton, b23utton, b24utton,
+            b25utton, b26utton, b27utton;
 
-    Window()
-    {
-        setSize(400, 300);
-        setTitle("Calculator");
+    public Window() {
+
+        setSize(255, 320);
         setResizable(false);
+        setTitle("Calculator");
         setLayout(null);
-
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        addKeyListener(new KeyListener()
+        screen = new JTextArea();
+        screen.setBounds(10, 40, 222, 50);
+        screen.setEditable(false);
+        screen.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        screen.setFont(new Font("Courier New", Font.ITALIC, 30));
+        screen.addKeyListener(new KeyListener()
         {
 
             @Override
@@ -38,5 +49,159 @@ public class Window extends JFrame
 
             }
         });
+        add(screen);
+
+        //pierwsza kolumna
+        b0utton = new JButton("");
+        b0utton.setBounds(10, 95, 42, 25);
+        b0utton.addActionListener(this);
+        add(b0utton);
+
+        b1utton = new JButton("B");
+        b1utton.setBounds(10, 125, 42, 25);
+        b1utton.addActionListener(this);
+        add(b1utton);
+
+        b2utton = new JButton("7");
+        b2utton.setBounds(10, 155, 42, 25);
+        b2utton.addActionListener(this);
+        add(b2utton);
+
+        b3utton = new JButton("4");
+        b3utton.setBounds(10, 185, 42, 25);
+        b3utton.addActionListener(this);
+        add(b3utton);
+
+        b4utton = new JButton("1");
+        b4utton.setBounds(10, 215, 42, 25);
+        b4utton.addActionListener(this);
+        add(b4utton);
+
+        b5utton = new JButton("0");
+        b5utton.setBounds(10, 245, 87, 25);
+        b5utton.addActionListener(this);
+        add(b5utton);
+
+        //druga kolumna
+        b6utton = new JButton("");
+        b6utton.setBounds(55, 95, 42, 25);
+        b6utton.addActionListener(this);
+        add(b6utton);
+
+        b7utton = new JButton("");
+        b7utton.setBounds(55, 125, 42, 25);
+        b7utton.addActionListener(this);
+        add(b7utton);
+
+        b8utton = new JButton("8");
+        b8utton.setBounds(55, 155, 42, 25);
+        b8utton.addActionListener(this);
+        add(b8utton);
+
+        b9utton = new JButton("5");
+        b9utton.setBounds(55, 185, 42, 25);
+        b9utton.addActionListener(this);
+        add(b9utton);
+
+        b10utton = new JButton("2");
+        b10utton.setBounds(55, 215, 42, 25);
+        b10utton.addActionListener(this);
+        add(b10utton);
+
+        //trzecia kolumna
+        b11utton = new JButton("");
+        b11utton.setBounds(100, 95, 42, 25);
+        b11utton.addActionListener(this);
+        add(b11utton);
+
+        b12utton = new JButton("");
+        b12utton.setBounds(100, 125, 42, 25);
+        b12utton.addActionListener(this);
+        add(b12utton);
+
+        b13utton = new JButton("9");
+        b13utton.setBounds(100, 155, 42, 25);
+        b13utton.addActionListener(this);
+        add(b13utton);
+
+        b14utton = new JButton("6");
+        b14utton.setBounds(100, 185, 42, 25);
+        b14utton.addActionListener(this);
+        add(b14utton);
+
+        b15utton = new JButton("3");
+        b15utton.setBounds(100, 215, 42, 25);
+        b15utton.addActionListener(this);
+        add(b15utton);
+
+        b16utton = new JButton(",");
+        b16utton.setBounds(100, 245, 42, 25);
+        b16utton.addActionListener(this);
+        add(b16utton);
+
+        //czwarta kolumna
+        b17utton = new JButton("");
+        b17utton.setBounds(145, 95, 42, 25);
+        b17utton.addActionListener(this);
+        add(b17utton);
+
+        b18utton = new JButton("");
+        b18utton.setBounds(145, 125, 42, 25);
+        b18utton.addActionListener(this);
+        add(b18utton);
+
+        b19utton = new JButton("/");
+        b19utton.setBounds(145, 155, 42, 25);
+        b19utton.addActionListener(this);
+        add(b19utton);
+
+        b20utton = new JButton("*");
+        b20utton.setBounds(145, 185, 42, 25);
+        b20utton.addActionListener(this);
+        add(b20utton);
+
+        b21utton = new JButton("-");
+        b21utton.setBounds(145, 215, 42, 25);
+        b21utton.addActionListener(this);
+        add(b21utton);
+
+        b22utton = new JButton("+");
+        b22utton.setBounds(145, 245, 42, 25);
+        b22utton.addActionListener(this);
+        add(b22utton);
+
+        //piąta kolumna
+        b23utton = new JButton("");
+        b23utton.setBounds(190, 95, 42, 25);
+        b23utton.addActionListener(this);
+        add(b23utton);
+
+        b24utton = new JButton("");
+        b24utton.setBounds(190, 125, 42, 25);
+        b24utton.addActionListener(this);
+        add(b24utton);
+
+        b25utton = new JButton("%");
+        b25utton.setFont(new Font("Courier New", Font.ITALIC, 14));
+        b25utton.setBounds(190, 155, 42, 25);
+        b25utton.addActionListener(this);
+        add(b25utton);
+
+        b26utton = new JButton("");
+        b26utton.setBounds(190, 185, 42, 25);
+        b26utton.addActionListener(this);
+        add(b26utton);
+
+        b27utton = new JButton("=");
+        b27utton.setBounds(190, 215, 42, 55);
+        b27utton.addActionListener(this);
+        add(b27utton);
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+
     }
 }
