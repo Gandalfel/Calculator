@@ -1,114 +1,50 @@
 package Calculator;
 
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 
 public class Filter
 {
+    private static String statement = "";
+    private static StringBuilder statementSb = new StringBuilder(statement);
+    private static String result = "";
+    private static char keyChar;
 
-    private static String chain = "";
-    private static StringBuilder chainSb = new StringBuilder(chain);
-    private static String resultFilter = "";
-    private static int a = 0;
-
-
-    /**
-     * Odczytuje i filtruje znaki dostające się do StringBuildera chainSb.
-     * @param e
-     */
     public static void displayInfo(KeyEvent e)
     {
-        a = 0;
         String finalKey = "";
         char keyChar = e.getKeyChar();
-        System.out.println(keyChar);
-        finalKey = finalKey + keyChar;
+        System.out.print(keyChar);
+        finalKey += keyChar;
 
         if(finalKey.equals("0") || finalKey.equals("1") || finalKey.equals("2") || finalKey.equals("3") ||
-            finalKey.equals("4") || finalKey.equals("5") || finalKey.equals("6") || finalKey.equals("7") ||
-            finalKey.equals("8") || finalKey.equals("9") || finalKey.equals("+") || finalKey.equals("-") ||
-            finalKey.equals("*") || finalKey.equals("/") || finalKey.equals("(") || finalKey.equals(")"))
+                finalKey.equals("4") || finalKey.equals("5") || finalKey.equals("6") || finalKey.equals("7") ||
+                finalKey.equals("8") || finalKey.equals("9") || finalKey.equals("+") || finalKey.equals("-") ||
+                finalKey.equals("*") || finalKey.equals("/") || finalKey.equals("(") || finalKey.equals(")"))
         {
             addCharacter(finalKey);
         }
-
-
-        if(e.getKeyChar() == KeyEvent.VK_ENTER)
+        else if(e.getKeyChar() == KeyEvent.VK_ENTER)
         {
-            System.out.println("chainSb: " + chainSb);
-            resultFilter = resultFilter + chainSb;
-            System.out.println("getFilterResult(): " + getFilterResult());
-            Converter.ConvertForMe(getFilterResult());
-            System.out.println(Calculator.Calculate(Converter.getConverterResult()));
+            result += statementSb;
+            Converter converter = new Converter(Filter.getResult());
+            Calculator calculator = new Calculator(Converter.getResult());
+            System.out.println(Calculator.getResult());
+
+            System.out.println("FilterResult(): " + Filter.getResult());
+            System.out.println("ConverterResult(): " + Converter.getResult());
+            System.out.println("CalculatorResult(): " + Calculator.getResult());
         }
     }
 
+    private static void addCharacter(String a) {statementSb.append(a).toString();}
 
-    /**
-     * Wywołana dodaje argument go StringBuildera chainSb.
-     * @param a
-     */
-    private static void addCharacter(String a)
-    {
-        chainSb.append(a).toString();
-    }
+    public static String getResult() {return result;}
 
-
-    /**
-     * zwraca zmienną filterResult
-     * @return
-     */
-    private static String getFilterResult()
-    {
-        return resultFilter;
-    }
-
-
-    /**
-     * nie używana metoda reagująca na ENTER
-     * @return
-     */
     private static void isEnter()
     {
-        if(a == KeyEvent.VK_ENTER)
+        if(keyChar == KeyEvent.VK_ENTER)
         {
 
         }
-    }
-
-
-    /**
-     * niepotrzebna metoda
-     * @return
-     * */
-    public static String readString()
-    {
-        int ch;
-        String r = getFilterResult();
-        boolean done = false;
-
-        while (!done)
-        {
-
-            try
-            {
-                ch = System.in.read();
-
-                if (ch < 0 || (char) ch == '\n')
-                {
-                    done = true;
-                }
-                else if ((char) ch != '\r')
-                {
-                    r = r + (char) ch;
-                }
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return r;
     }
 }
-
