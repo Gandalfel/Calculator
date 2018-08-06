@@ -4,16 +4,26 @@ import java.util.Stack;
 
 public class Calculator
 {
-    static double Calculate(String result)
+    private static String statement;
+    private static String result;
+
+    public Calculator(String s)
     {
-        result = result.trim();
-        Stack<Double> values = new Stack<>(); //stos
-        String[] tokens = result.split(" +");
+        statement = s;
+        result = "";
+        calculating(statement);
+    }
+
+    private static void calculating(String s)
+    {
+        s = s.trim();
+        Stack<Double> values = new Stack<>();
+        String[] tokens = s.split(" +");
         double answer = 0.0;
 
-        for (String token: tokens)
+        for (String token : tokens)
         {
-            if(!isOperator(token))
+            if (!isOperator(token))
             {
                 values.add(Double.parseDouble(token));
             }
@@ -21,7 +31,7 @@ public class Calculator
             {
                 double a = values.pop();
                 double b = values.pop();
-                switch(token)
+                switch (token)
                 {
                     case "+":
                         answer = a + b;
@@ -33,17 +43,19 @@ public class Calculator
                         answer = a * b;
                         break;
                     case "/":
-                        answer = a / b;
+                        answer = b / a;
                         break;
                 }
                 values.add(answer);
             }
         }
-        return answer;
+        result = String.valueOf(answer);
     }
 
     private static boolean isOperator(String s)
     {
         return s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/");
     }
+
+    public static String getResult() {return result;}
 }
