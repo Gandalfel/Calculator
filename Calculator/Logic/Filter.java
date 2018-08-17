@@ -1,7 +1,5 @@
 package Calculator.Logic;
 
-import Calculator.ViewAndDisplay.Display;
-
 import java.awt.event.KeyEvent;
 import static Calculator.Logic.Calculator.isNumber;
 import static Calculator.ViewAndDisplay.Display.displayingStrings;
@@ -16,52 +14,75 @@ public class Filter
     private static String result = "";
     private static boolean enter = false;
 
-    public static class FiltratingCharacters implements Runnable
+    private static boolean isNumber = false;
+    private static boolean isOpeningBracket = false;
+    private static boolean isClosingBracket = false;
+
+    public static void filtrating()
     {
-        public FiltratingCharacters()
+        if(keyString.equals("0") || keyString.equals("1") || keyString.equals("2") || keyString.equals("3") ||
+                keyString.equals("4") || keyString.equals("5") || keyString.equals("6") || keyString.equals("7") ||
+                keyString.equals("8") || keyString.equals("9") || keyString.equals("+") || keyString.equals("-") ||
+                keyString.equals("+") || keyString.equals("-"))
         {
-            run();
+            synchronized (statementSb)
+            {
+                statementSb.append(keyString);
+                displayingStrings(keyString);
+                System.out.print(keyChar);
+            }
         }
-
-        @Override
-        public void run()
+        else if (keyString.equals("/"))
         {
-            if(keyString.equals("0") || keyString.equals("1") || keyString.equals("2") || keyString.equals("3") ||
-                    keyString.equals("4") || keyString.equals("5") || keyString.equals("6") || keyString.equals("7") ||
-                    keyString.equals("8") || keyString.equals("9") || keyString.equals("+") || keyString.equals("-") ||
-                    keyString.equals("*") || keyString.equals("/") || keyString.equals("(") || keyString.equals(")"))
+            synchronized (statementSb)
             {
-                synchronized (statementSb)
-                {
-                    statementSb.append(keyString);
-                    displayingStrings(keyString);
-                    System.out.print(keyChar);
-                }
+                statementSb.append(keyString);
+                displayingStrings("÷");
+                System.out.print("÷");
             }
-            else if (keyString.equals(",") || keyString.equals("."))
+        }
+        else if (keyString.equals("*"))
+        {
+            synchronized (statementSb)
             {
-                synchronized (statementSb)
-                {
-                    displayingStrings(".");
-                    statementSb.append(".");
-                }
+                statementSb.append(keyString);
+                displayingStrings("×");
+                System.out.print("×");
             }
-            else if(keyChar == KeyEvent.VK_ENTER)
+        }
+        else if (keyString.equals(",") || keyString.equals("."))
+        {
+            synchronized (statementSb)
             {
-                deleteScreenContent();
-                result += statementSb;
-                Converter.converting(Filter.getResult());
-                Calculator.calculating(Converter.getResult());
-                displayingStrings(Calculator.getResult());
+                statementSb.append(".");
+                displayingStrings(".");
+                System.out.print(".");
+            }
+        }
+        else if (keyString.equals("(") || keyString.equals(")"))
+        {
+            synchronized (statementSb)
+            {
+                statementSb.append(keyString);
+                displayingStrings(keyString);
+                System.out.print(keyString);
+            }
+        }
+        else if(keyChar == KeyEvent.VK_ENTER)
+        {
+            deleteScreenContent();
+            result += statementSb;
+            Converter.converting(Filter.getResult());
+            Calculator.calculating(Converter.getResult());
+            displayingStrings(Calculator.getResult());
 
-                System.out.println("\r");
-                System.out.println("FilterResult(): " + Filter.getResult());
-                System.out.println("ConverterResult(): " + Converter.getResult());
-                System.out.println("CalculatorResult(): " + Calculator.getResult());
-                statementSb.delete(0, statementSb.length());
+            System.out.println("\r");
+            System.out.println("FilterResult(): " + Filter.getResult());
+            System.out.println("ConverterResult(): " + Converter.getResult());
+            System.out.println("CalculatorResult(): " + Calculator.getResult());
+            statementSb.delete(0, statementSb.length());
 
-                result = "";
-            }
+            result = "";
         }
     }
 
@@ -70,14 +91,15 @@ public class Filter
         keyString = "";
         keyChar = e.getKeyChar();
         keyString += keyChar;
-        new FiltratingCharacters();
-        //new AdditionMultiplicationSign();
+        System.out.print(keyString);
+        filtrating();
     }
 
     public static void charsFromActionL(String a)
     {
         keyString = a;
-        new FiltratingCharacters();
+        System.out.print(keyString);
+        filtrating();
     }
 
     public static void deleteStatementSbContent()
@@ -108,7 +130,6 @@ public class Filter
 
         public void run()
         {
-            System.out.println("frsezdf");
             for(int a = 0;a == statementSb.length();a++)
             {
                 if (isNumber(statementSb.charAt(a)) == true ||
