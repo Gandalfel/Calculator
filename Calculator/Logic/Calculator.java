@@ -1,6 +1,8 @@
 package Calculator.Logic;
 
 import java.util.Stack;
+import static Calculator.ViewAndDisplay.Display.deleteScreenContent;
+import static Calculator.ViewAndDisplay.Display.displayingStrings;
 
 public class Calculator
 {
@@ -9,41 +11,49 @@ public class Calculator
 
     public static void calculating(String s)
     {
-        statement = s;
-        statement = statement.trim();
-        Stack<Double> numbers = new Stack<>();
-        String[] tokens = statement.split(" +");
-        double answer = 0.0;
-
-        for (String token : tokens)
+        try
         {
-            if (!isOperator(token))
+            statement = s;
+            statement = statement.trim();
+            Stack<Double> numbers = new Stack<>();
+            String[] tokens = statement.split(" +");
+            double answer = 0.0;
+
+            for (String token : tokens)
             {
-                numbers.add(Double.parseDouble(token));
-            }
-            else
-            {
-                double a = numbers.pop();
-                double b = numbers.pop();
-                switch (token)
+                if (!isOperator(token))
                 {
-                    case "+":
-                        answer = a + b;
-                        break;
-                    case "-":
-                        answer = b - a;
-                        break;
-                    case "*":
-                        answer = a * b;
-                        break;
-                    case  "/":
-                        answer = b / a;
-                        break;
+                    numbers.add(Double.parseDouble(token));
                 }
-                numbers.add(answer);
+                else
+                {
+                    double a = numbers.pop();
+                    double b = numbers.pop();
+                    switch (token)
+                    {
+                        case "+":
+                            answer = a + b;
+                            break;
+                        case "-":
+                            answer = b - a;
+                            break;
+                        case "*":
+                            answer = a * b;
+                            break;
+                        case  "/":
+                            answer = b / a;
+                            break;
+                    }
+                    numbers.add(answer);
+                }
             }
+            result = String.valueOf(answer);
         }
-        result = String.valueOf(answer);
+        catch (java.util.EmptyStackException e)
+        {
+            deleteScreenContent();
+            displayingStrings("bad data");
+        }
     }
 
     public static boolean isOperator(String n)
