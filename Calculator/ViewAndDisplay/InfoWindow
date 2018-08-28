@@ -6,11 +6,11 @@ public class InfoWindow extends JFrame
 {
     private JScrollPane scroll;
     private JTextArea versionL, dateL, whatsNewsL, descriptionL, toDoL;
-    private String version = "1.0",
+    private String version = "1.1 - anti idiot update",
             date = "28.08.2018",
-            whatsNews = "-nowe menu z nowymi funkcjonalnościami\n",
+            whatsNews = "-mechanizm idioto-odporny\n-naprawa błędów wczytywania okna",
             description = "Kalkulator zrobiony w Javie przy użyciu biblioteki Swing.\n",
-            toDo = "-ZRÓB SCROLLA DO TEGO OKIENKA \n-mechanizm idioto-odporny\n-obsługa potęg i pierwiastków\n-całkowite przeprogramowanie " +
+            toDo = "-ZRÓB SCROLLA DO TEGO OKIENKA \n-obsługa potęg i pierwiastków\n-całkowite przeprogramowanie " +
                     "GUI przy użyciu JavaFX";
 
 
