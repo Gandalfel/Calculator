@@ -6,6 +6,8 @@ import Calculator.Logic.Filter;
 
 import static Calculator.Logic.Filter.*;
 import static Calculator.ViewAndDisplay.Display.deleteScreenContent;
+import static javafx.scene.input.Clipboard.getSystemClipboard;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -45,8 +47,22 @@ public class Window extends JFrame
         setTitle("Calculator");
         setLayout(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
 
+        try
+        {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("LookAmdFeel Error");
+        }
         menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
@@ -94,7 +110,7 @@ public class Window extends JFrame
         menuTools.add(exit);
 
         screen = new JTextArea();
-        screen.setBounds(10, 10, 224, 50);
+        screen.setBounds(9, 10, 225, 50);
         screen.setEditable(false);
         screen.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         screen.setFont(new Font("Courier", Font.ITALIC, 28));
@@ -323,5 +339,9 @@ public class Window extends JFrame
             eqalTo();
         });
         add(b27utton);
+
+        pack();
+        setSize(255, 307);
+        setVisible(true);
     }
 }
