@@ -56,6 +56,11 @@ public class Calculator
         }
     }
 
+    public static void resetResult()
+    {
+        result = "";
+    }
+
     public static boolean isOperator(String n)
     {
         boolean bool = false;
@@ -63,18 +68,18 @@ public class Calculator
         return bool;
     }
 
-    public static boolean isOperator(char n)
+    /*public static boolean isOperator(char n)
     {
         boolean bool = false;
         if (n == '+' || n == '-' || n == '*' || n == '/') {bool = true;}
         return bool;
-    }
+    }*/
 
     public static boolean isNumber(String c)
     {
         boolean var = false;
-        if (c == "0" || c == "1" || c == "2" || c == "3" || c == "4" ||
-                c == "5" || c == "6" || c == "7" || c == "8" || c == "9")
+        if (c.equals("0") || c.equals("1") || c.equals("2") || c.equals("3") || c.equals("4") ||
+                c.equals("5") || c.equals("6") || c.equals("7") || c.equals("8") || c.equals("9"))
         {
             var = true;
         }
