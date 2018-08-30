@@ -1,10 +1,13 @@
 package Calculator.Logic;
 
+import Calculator.ViewAndDisplay.Window;
+
 import java.awt.event.KeyEvent;
 import static Calculator.Logic.Calculator.isNumber;
 import static Calculator.Logic.Calculator.isOperator;
-import static Calculator.ViewAndDisplay.Display.displayingStrings;
-import static Calculator.ViewAndDisplay.Display.deleteScreenContent;
+import static Calculator.ViewAndDisplay.Window.deleteScreenContent;
+import static Calculator.ViewAndDisplay.Window.displayingResult;
+import static Calculator.ViewAndDisplay.Window.displayingStrings;
 
 public class Filter
 {
@@ -12,16 +15,16 @@ public class Filter
     private static char keyChar;
     private static String keyString = "";
     private static String result = "";
-    private static boolean isNumberDeleteScreenContent = false;
-
     private static String buffer = "";
+
     public static void filtrating()
     {
-        //System.out.println("statement.length(): " + statement.length());
-        System.out.println("buffer: " + buffer);
-        System.out.println("keyString: " + keyString);
+        keyString.toLowerCase();
+        /*System.out.println("buffer: " + buffer);
+        System.out.println("keyString: " + keyString);*/
         if(isNumber(keyString) || isOperator(keyString)|| keyString.equals("*") ||
-                keyString.equals("/") || keyString.equals("(") || keyString.equals(")"))
+                keyString.equals("/") || keyString.equals("(") || keyString.equals(")") ||
+                keyString.equals(",") || keyString.equals("."))
         {
             if ((isNumber(keyString) || keyString.equals("(")) && statement.length() < 1)
             {
@@ -93,14 +96,33 @@ public class Filter
                     buffer = keyString;
                     displayingStrings(keyString);
                 }
+                else if (buffer.equals(")") && keyString.equals("("))
+                {
+                    statement += "*";
+                    statement += keyString;
+                    buffer = keyString;
+                    displayingStrings("×");
+                    displayingStrings(keyString);
+                }
+                else if (isNumber(buffer)  && keyString.equals(".") || keyString.equals(","))
+                {
+                    statement += ".";
+                    buffer = ".";
+                    displayingStrings(keyString);
+                }
+                else if (buffer.equals(".") && isNumber(keyString))
+                {
+                    statement += keyString;
+                    buffer = keyString;
+                    displayingStrings(keyString);
+                }
                 else if(keyChar == KeyEvent.VK_ENTER)
                 {
-                    if (!isOperator(buffer) && (!buffer.equals("(") || !buffer.equals(")")))
                     deleteScreenContent();
                     result += statement;
                     Converter.converting(Filter.getResult());
                     Calculator.calculating(Converter.getResult());
-                    displayingStrings(Calculator.getResult());
+                    displayingResult(Calculator.getResult());
 
                     System.out.println("\r");
                     System.out.println("FilterResult(): " + Filter.getResult());
@@ -120,20 +142,59 @@ public class Filter
         result = "";
     }
 
+    public static void deleteLastCharFromStatement()
+    {
+        /*if (statement.length() >= 1)
+        {
+            StringBuilder sb = new StringBuilder(statement);
+            sb.deleteCharAt(sb.length() - 1);
+            statement = String.valueOf(sb);
+        }*/
+
+        try
+        {
+            char buffer;
+            StringBuilder sb = new StringBuilder(statement);
+            if (sb.length() >= 1)
+            {
+                if (isNumber(sb.charAt(sb.length() - 1)) && sb.length() >= 1)
+                {
+                    buffer = sb.charAt(sb.length() - 1);
+                    sb.deleteCharAt(sb.length() - 1);
+                    statement = String.valueOf(sb);
+                    if (isNumber(buffer) && sb.charAt(sb.length() - 1) == '.')
+                    {
+                        sb.deleteCharAt(sb.length() - 1);
+                        statement = String.valueOf(sb);
+                    }
+                }
+            }
+            System.out.println("sb z filtrea: "+sb);
+        }
+        catch (java.lang.StringIndexOutOfBoundsException e)
+        {
+            System.out.println("BLAD BLAD BLAD");
+        }
+    }
+
     public static void charsFromKeyL(KeyEvent e)
     {
-        keyString = "";
-        keyChar = e.getKeyChar();
-        keyString += keyChar;
-        //System.out.print(keyString);
-        filtrating();
+        if (statement.length() <= 12)
+        {
+            keyString = "";
+            keyChar = e.getKeyChar();
+            keyString += keyChar;
+            filtrating();
+        }
     }
 
     public static void charsFromActionL(String a)
     {
-        keyString = a;
-        //System.out.print(keyString);
-        filtrating();
+        if (statement.length() <= 12)
+        {
+            keyString = a;
+            filtrating();
+        }
     }
 
     public static void eqalTo()
@@ -142,7 +203,8 @@ public class Filter
         result += statement;
         Converter.converting(Filter.getResult());
         Calculator.calculating(Converter.getResult());
-        displayingStrings(Calculator.getResult());
+        displayingResult(Calculator.getResult());
+        resetStatementSbAndResult();
     }
 
     public static String getResult()
