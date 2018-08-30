@@ -5,9 +5,10 @@ import Calculator.Logic.Converter;
 import Calculator.Logic.Filter;
 
 import static Calculator.Logic.Filter.*;
-import static Calculator.ViewAndDisplay.Display.deleteScreenContent;
-import static javafx.scene.input.Clipboard.getSystemClipboard;
+import static Calculator.Logic.Calculator.isNumber;
+import static Calculator.Logic.Calculator.isOperator;
 
+import javax.print.DocFlavor;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -150,7 +151,8 @@ public class Window extends JFrame
         b1utton.setBounds(10, 95, 42, 25);
         b1utton.addActionListener(e ->
         {
-            charsFromActionL(t1ext);
+            deleteLastCharFromScreen();
+            deleteLastCharFromStatement();
         });
         add(b1utton);
 
@@ -343,5 +345,68 @@ public class Window extends JFrame
         pack();
         setSize(255, 307);
         setVisible(true);
+    }
+
+    public static void displayingStrings(String a)
+    {
+        if (screen.getText().length() <= 12)
+        {
+            if (a.equals("*"))
+            {
+                screen.append("×");
+            }
+            else if (a.equals("/"))
+            {
+                screen.append("÷");
+            }
+            else
+            {
+                screen.append(a);
+            }
+        }
+    }
+
+    public static void displayingResult(String a)
+    {
+        StringBuilder sb = new StringBuilder(a);
+        if (sb.charAt(sb.length()-1) == '0' && sb.charAt(sb.length() - 2) == '.')
+        {
+            sb.deleteCharAt(sb.length() - 1);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        screen.setText(String.valueOf(sb));
+
+    }
+
+    public static void deleteScreenContent()
+    {
+        screen.setText("");
+    }
+
+    public static void deleteLastCharFromScreen()
+    {
+        try
+        {
+            char buffer;
+            StringBuilder sb = new StringBuilder(screen.getText());
+            if (sb.length() >= 1)
+            {
+                if (isNumber(sb.charAt(sb.length() - 1)) && sb.length() >= 1)
+                {
+                    buffer = sb.charAt(sb.length() - 1);
+                    sb.deleteCharAt(sb.length() - 1);
+                    screen.setText(String.valueOf(sb));
+                    if (isNumber(buffer) && sb.charAt(sb.length() - 1) == '.')
+                    {
+                        sb.deleteCharAt(sb.length() - 1);
+                        screen.setText(String.valueOf(sb));
+                    }
+                }
+            }
+        }
+        catch (java.lang.StringIndexOutOfBoundsException e)
+        {
+            System.out.println("BLAD BLAD BLAD");
+        }
     }
 }
