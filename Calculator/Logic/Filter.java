@@ -12,10 +12,13 @@ import static Calculator.ViewAndDisplay.Window.displayingStrings;
 public class Filter
 {
     private static String statement = "";
+    /*private static String statementJedno = "";
+    private static String statementOperator = "";*/
     private static char keyChar;
     private static String keyString = "";
     private static String result = "";
     private static String buffer = "";
+    private static String buffer2 = "";
 
     public static void filtrating()
     {
@@ -58,7 +61,7 @@ public class Filter
                     buffer = keyString;
                     displayingStrings(keyString);
                 }
-                else if (isNumber(buffer) && keyString.equals(")"))
+                else if (isNumber(buffer) && keyString.equals(")"))//tuuuuuuuu
                 {
                     statement += keyString;
                     buffer = keyString;
@@ -144,37 +147,40 @@ public class Filter
 
     public static void deleteLastCharFromStatement()
     {
-        /*if (statement.length() >= 1)
+        char bufferInMethod;
+        StringBuilder sb = new StringBuilder(statement);
+        if (sb.length() >= 1)
         {
-            StringBuilder sb = new StringBuilder(statement);
-            sb.deleteCharAt(sb.length() - 1);
-            statement = String.valueOf(sb);
-        }*/
-
-        try
-        {
-            char buffer;
-            StringBuilder sb = new StringBuilder(statement);
-            if (sb.length() >= 1)
+            if (sb.charAt(sb.length() - 1) == '.')
             {
-                if (isNumber(sb.charAt(sb.length() - 1)) && sb.length() >= 1)
+                sb.deleteCharAt(sb.length() - 1);
+                buffer = String.valueOf(sb.charAt(sb.length() - 1));
+                statement = String.valueOf(sb);
+            }
+            else if (isOperator(sb.charAt(sb.length() - 1)))
+            {
+                sb.deleteCharAt(sb.length() - 1);
+                buffer = String.valueOf(sb.charAt(sb.length() - 1));
+                statement = String.valueOf(sb);
+            }
+            else if (isNumber(sb.charAt(sb.length() - 1)) && sb.length() >= 1)
+            {
+                bufferInMethod = sb.charAt(sb.length() - 1);
+                sb.deleteCharAt(sb.length() - 1);
+                statement = String.valueOf(sb);
+                if (isNumber(buffer) && sb.charAt(sb.length() - 1) == '.')
                 {
-                    buffer = sb.charAt(sb.length() - 1);
                     sb.deleteCharAt(sb.length() - 1);
                     statement = String.valueOf(sb);
-                    if (isNumber(buffer) && sb.charAt(sb.length() - 1) == '.')
-                    {
-                        sb.deleteCharAt(sb.length() - 1);
-                        statement = String.valueOf(sb);
-                    }
                 }
             }
-            System.out.println("sb z filtrea: "+sb);
+            else if (sb.charAt(sb.length() - 1) == '.')
+            {
+                sb.deleteCharAt(sb.length() - 1);
+                statement += String.valueOf(sb);
+            }
         }
-        catch (java.lang.StringIndexOutOfBoundsException e)
-        {
-            System.out.println("BLAD BLAD BLAD");
-        }
+        System.out.println("sb z filtrea: "+sb);
     }
 
     public static void charsFromKeyL(KeyEvent e)
