@@ -349,6 +349,21 @@ public class Window extends JFrame
 
     public static void displayingStrings(String a)
     {
+        StringBuilder sb = new StringBuilder(screen.getText());
+        boolean bool = false;
+        for (int i = 1; i == sb.length(); i++)
+        {
+            if (isOperator(sb.charAt(i)))
+            {
+                bool = true;
+            }
+        }
+
+        if (bool == true)
+        {
+
+        }
+
         if (screen.getText().length() <= 12)
         {
             if (a.equals("*"))
@@ -391,7 +406,17 @@ public class Window extends JFrame
             StringBuilder sb = new StringBuilder(screen.getText());
             if (sb.length() >= 1)
             {
-                if (isNumber(sb.charAt(sb.length() - 1)) && sb.length() >= 1)
+                if (sb.charAt(sb.length() - 1) == '.')
+                {
+                    sb.deleteCharAt(sb.length() - 1);
+                    screen.setText(String.valueOf(sb));
+                }
+                else if (isOperator(sb.charAt(sb.length() - 1)))
+                {
+                    sb.deleteCharAt(sb.length() - 1);
+                    screen.setText(String.valueOf(sb));
+                }
+                else if (isNumber(sb.charAt(sb.length() - 1)) && sb.length() >= 1)
                 {
                     buffer = sb.charAt(sb.length() - 1);
                     sb.deleteCharAt(sb.length() - 1);
@@ -402,7 +427,12 @@ public class Window extends JFrame
                         screen.setText(String.valueOf(sb));
                     }
                 }
+                else if (sb.charAt(sb.length() - 1) == '.')
+                {
+                    sb.deleteCharAt(sb.length() - 1);
+                }
             }
+            System.out.println("sb z Window: "+sb);
         }
         catch (java.lang.StringIndexOutOfBoundsException e)
         {
